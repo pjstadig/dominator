@@ -1,0 +1,6 @@
+* Phase 1: Let's get some basic key bindings going here:
+  - [ ] Exit Chrome with 'C-x C-c'
+  - [ ] Open a new tab with 'C-x C-f'
+  - [ ] Can we capture 'M-x' to execute a function?
+  - [ ] Close a tab with 'C-x k'
+  - [ ] Switch tabs with 'C-x b'
