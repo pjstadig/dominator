@@ -1,0 +1,21 @@
+{
+  "name": "Dominator",
+  "version": "1.0",
+  "description": "Emacs key bindings for Chrome.",
+  "background_page" : "background.html",
+  "content_scripts" : [{
+    "run_at" : "document_start",
+    "matches": ["<all_urls>"],
+    "js": ["debug.js",
+           "keyboard_event.js",
+           "dominator.js"],
+    "all_frames" : true
+  }],
+  "page_action": {
+    "default_icon": "icons/quotes-icon.png",
+    "default_title": "Quote Mode"
+  },
+  "permissions" : [
+    "tabs"
+  ]
+}

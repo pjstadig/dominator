@@ -1,0 +1,6 @@
+* How to install
+  For now, since there is no release, you must install it manually:
+  - Go to your chrome extensions page
+  - Expand the "Developer Mode" option in the upper left corner
+  - Click the "Load unpacked extension..." button
+  - Browse to the dominator directory
