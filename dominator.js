@@ -37,7 +37,7 @@ var config = {
   "S-b" : function() { history.back() },
   "S-f" : function() { history.forward() },
   "M-S-," : function() { window.scrollTo(0, 0) },
-  "M-S-." : function() { window.scrollTo(0, document.body.clientHeight) }
+  "M-S-." : function() { window.scrollTo(0, document.body.scrollHeight) }
 };
 
 function matchKeys(config) {

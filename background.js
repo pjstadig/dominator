@@ -53,7 +53,8 @@ function findActionHandler(action) {
     "next-tab" : nextTab,
     "new-tab" : newTab,
     "quote" : quote,
-    "unquote" : unquote
+    "unquote" : unquote,
+    "exit" : exit
   }[action];
 }
 
