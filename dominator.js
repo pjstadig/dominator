@@ -1,83 +1,78 @@
-function messageHandler(message) {
-  debug("Recieved message:");
-  debug(message);
+function scrollToTop(message) {
+  window.scrollTo(0, 0);
 }
 
-var port = chrome.extension.connect();
-port.onMessage.addListener(messageHandler);
-
-var isQuote = false;
-
-function quote() {
-  isQuote = true;
-  keys = [];
-  port.postMessage(["quote"]);
+function scrollToBottom(message) {
+  window.scrollTo(0, document.body.scrollHeight);
 }
 
-function unquote() {
-  isQuote = false;
-  keys = [];
-  port.postMessage(["unquote"]);
+function scrollDown(message) {
+  window.scrollBy(0, 20);
 }
 
-var keys = [];
-var config = {
-  "q"   : "close-tab",
-  "C-M-q" : quote,
-  "M-n" : "next-tab",
-  "M-p" : "previous-tab",
-  "C-x" : {
-    "C-c" : "exit",
-    "C-f" : "new-tab"
-  },
-  "C-n" : function() { window.scrollBy(0, 20) },
-  "C-p" : function() { window.scrollBy(0, -20) },
-  "C-v" : function() { window.scrollBy(0, window.innerHeight - 40) },
-  "M-v" : function() { window.scrollBy(0, -window.innerHeight + 40) },
-  "S-b" : function() { history.back() },
-  "S-f" : function() { history.forward() },
-  "M-S-," : function() { window.scrollTo(0, 0) },
-  "M-S-." : function() { window.scrollTo(0, document.body.scrollHeight) }
+function scrollUp(message) {
+  window.scrollBy(0, -20);
+}
+
+function scrollRight(message) {
+  window.scrollBy(20, 0);
+}
+
+function scrollLeft(message) {
+  window.scrollBy(-20, 0);
+}
+
+function pageDown(message) {
+  window.scrollBy(0, window.innerHeight - 40);
+}
+
+function pageUp(message) {
+  window.scrollBy(0, -window.innerHeight + 40);
+}
+
+function back(message) {
+  history.back(message);
+}
+
+function forward(message) {
+  history.forward(message);
+}
+
+function cut(message) {
+  document.execCommand('cut');
+}
+
+function copy(message) {
+  document.execCommand('copy');
+}
+
+function paste(message) {
+  document.execCommand('paste');
+}
+
+var dispatch = {
+  "scroll-to-top" : scrollToTop,
+  "scroll-to-bottom" : scrollToBottom,
+  "scroll-down" : scrollDown,
+  "scroll-up" : scrollUp,
+  "scroll-right" : scrollRight,
+  "scroll-left" : scrollLeft,
+  "page-down" : pageDown,
+  "page-up" : pageUp,
+  "back" : back,
+  "forward" : forward,
+  "cut" : cut,
+  "copy" : copy,
+  "paste" : paste
 };
 
-function matchKeys(config) {
-  debug("keys = " + keys);
-  if (keys.length == 0) return config;
-
-  var key = keys.shift();
-  debug("key = " + key);
-  var action = config[key];
-  debug("action = " + action);
-  if (typeof action == "object") {
-    action = matchKeys(action);
-    debug("action = " + action);
-    if (typeof action == "object") {
-      keys.unshift(key);
-    }
-  }
-  return action;
-}
-
-function keyHandler(e) {
-  if (e.isIgnored()) return;
-  var key = e.getKey();
-  if (isQuote) {
-    if (key == "Esc")
-      unquote();
-    return;
-  }
-
-  keys.push(e.getKey());
-  action = matchKeys(config);
+function messageHandler(command, sender, sendResponse) {
+  var action = dispatch[command];
   if (action) {
-    e.cancelBubble = true;
-    e.preventDefault();
-    e.stopPropagation();
-    if (typeof action == "function")
-      action();
-    else if (typeof action != "object")
-      port.postMessage([action]);
+    action(command);
+  } else {
+    debug("Unknown action");
   }
 }
 
-document.addEventListener("keydown", keyHandler);
+chrome.runtime.onMessage.addListener(messageHandler);

@@ -1,21 +1,63 @@
 {
+  "manifest_version" : 2,
   "name": "Dominator",
   "version": "1.0",
   "description": "Emacs key bindings for Chrome.",
-  "background_page" : "background.html",
+  "background" : {"page" : "background.html" },
   "content_scripts" : [{
     "run_at" : "document_start",
     "matches": ["<all_urls>"],
     "js": ["debug.js",
-           "keyboard_event.js",
-           "dominator.js"],
-    "all_frames" : true
+           "dominator.js"]
   }],
+  "commands" : {
+    "scroll-to-top" : {
+      "description" : "Scroll top of page"
+    },
+    "scroll-to-bottom" : {
+      "description" : "Scroll bottom of page"
+    },
+    "scroll-down" : {
+      "description" : "Scroll down one line"
+    },
+    "scroll-up" : {
+      "description" : "Scroll up one line"
+    },
+    "scroll-right" : {
+      "description" : "Scroll right"
+    },
+    "scroll-left" : {
+      "description" : "Scroll left"
+    },
+    "page-down" : {
+      "description" : "Scroll down one page"
+    },
+    "page-up" : {
+      "description" : "Scroll up one page"
+    },
+    "back" : {
+      "description" : "Go back to previous page"
+    },
+    "forward" : {
+      "description" : "Go forward to next page"
+    },
+    "cut" : {
+      "description" : "Cut selected text to clipboard"
+    },
+    "copy" : {
+      "description" : "Copy selected text to clipboard"
+    },
+    "paste" : {
+      "description" : "Paste text from clipboard"
+    }
+  },
   "page_action": {
     "default_icon": "icons/quotes-icon.png",
     "default_title": "Quote Mode"
   },
   "permissions" : [
-    "tabs"
+    "tabs",
+    "clipboardRead",
+    "clipboardWrite"
   ]
 }
